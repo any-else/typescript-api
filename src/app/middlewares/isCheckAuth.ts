@@ -17,7 +17,7 @@ export const isCheckAuth = async (
     }
     if (!accessToken)
       return res.status(401).json({
-        message: "access cua m deo co",
+        message: "tài khoản hiện tại của bạn chưa login",
       });
     //so sanh co phai hop le hay khong
     const decoded: any = jwt.verify(
@@ -26,7 +26,7 @@ export const isCheckAuth = async (
     );
     if (!decoded)
       return res.status(401).json({
-        message: "access cua m bi sai",
+        message: "mã token của bạn hiện tại đang lỗi",
       });
     //kiem tra xem co ton tai trong database hay ko
     const user = await UserService.findByEmail(decoded.email);
@@ -35,12 +35,12 @@ export const isCheckAuth = async (
       next();
     } else {
       return res.status(401).json({
-        message: "tai khoan hien tai ko ton tai",
+        message: "tài khoản của bạn hiện tại không tồn tại",
       });
     }
   } catch (error: any) {
-    return res.status(401).json({
-      message: "tai khoan hien tai ko ton tai",
+    return res.status(500).json({
+      message: "lỗi",
     });
   }
 };
