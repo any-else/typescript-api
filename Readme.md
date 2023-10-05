@@ -15,7 +15,9 @@
 - là nơi chứa toàn bộ thông tin ứng dụng dùng để viết API
 
 - Trong app gồm các folder
-  -- Controllers: dùng để luân chuyển giữa route và service
+
+```
+ -- Controllers: dùng để luân chuyển giữa route và service
   --- auth.controller
   --- user.controller
   --- product.controller
@@ -36,6 +38,7 @@
   --Types: xây dựng ra những type để ràng buộc những kiểu thêm vào hoặc xuất ra từ database
   --user.type.ts
   --app.ts: nơi chứa toàn bộ ứng dụng
+```
 
 4. configs
 
