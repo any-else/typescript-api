@@ -1,17 +1,25 @@
 import UserRepository from "../models/user.model";
 export class UserService {
-  static async findByEmail(email: string) {
+  //tìm kiếm
+  static async searchAndPaging(
+    keySearch: string,
+    pageNumber: number,
+    pageSize: number
+  ) {
     try {
-      const data = await UserRepository.findByEmail(email);
-      return data[0];
-    } catch (err) {
-      console.error(err);
+      const data = await UserRepository.searchAndPaging(
+        keySearch,
+        pageNumber,
+        pageSize
+      );
+      const total: number = data[0][0].total;
+      const result = data[1];
+      return {
+        total,
+        result,
+      };
+    } catch (error) {
+      console.error("có lỗi rồi", error);
     }
-  }
-  static async getAll() {
-    try {
-      const data = await UserRepository.getAll();
-      return data;
-    } catch (error) {}
   }
 }

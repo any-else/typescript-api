@@ -3,9 +3,11 @@ import bodyParser from "body-parser";
 import express, { Express } from "express";
 import morgan from "morgan";
 import Router from "./routers";
+import cors from "cors";
 const app: Express = express();
 
 //init middleware global
+app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));

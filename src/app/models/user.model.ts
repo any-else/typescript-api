@@ -1,54 +1,34 @@
-import exp from "constants";
 import { createConnection } from "../../configs/mysql.config";
-import { IUser } from "../types/user.type";
 import { Pool } from "mysql2";
 
 const connection = createConnection() as Pool;
 
 interface IUserRepository {
-  register(user: Omit<IUser, "id" | "roles">): Promise<any>;
-  findByEmail(email: string): Promise<any>;
-  getAll(): Promise<any>;
+  searchAndPaging(
+    keySearch: string,
+    pageNumber: number,
+    pageSize: number
+  ): Promise<any>;
 }
 class UserRepository implements IUserRepository {
-  async register(user: Omit<IUser, "id" | "roles">): Promise<any> {
+  async searchAndPaging(
+    keySearch: string,
+    pageNumber: number,
+    pageSize: number
+  ): Promise<any> {
     try {
-      connection.query("INSERT INTO users SET ?", user);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  async findByEmail(email: string): Promise<any> {
-    try {
-      return new Promise((resolve, rejects) => {
-        connection.query(
-          "SELECT * FROM users WHERE email = ?",
-          [email],
+      return new Promise((resolve, reject) => {
+        connection.execute(
+          "CALL Proc_user_SearchAndPaging(?, ?, ?)",
+          [keySearch, pageNumber, pageSize],
           (err, result) => {
-            if (err) {
-              rejects(err);
-            }
+            if (err) return reject(err);
             resolve(result);
           }
         );
       });
     } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async getAll(): Promise<any> {
-    try {
-      return new Promise((resolve, rejects) => {
-        connection.query("SELECT * FROM users", (err, result) => {
-          if (err) {
-            rejects(err);
-          }
-          resolve(result);
-        });
-      });
-    } catch (error) {
-      console.error(error);
+      console.error("có lỗi rồi", error);
     }
   }
 }
